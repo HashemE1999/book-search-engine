@@ -7,8 +7,12 @@ import {
   Card,
   Row
 } from 'react-bootstrap';
+// Importing useMutation from Apollo Client
+import { useMutation } from '@apollo/client';
 
 import Auth from '../utils/auth';
+// Importing SAVE_BOOK mutation from mutations.js
+import { SAVE_BOOK } from '../utils/mutations';
 import { saveBook, searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 
@@ -70,9 +74,12 @@ const SearchBooks = () => {
     if (!token) {
       return false;
     }
-
+    // TODO: replace saveBook function imported from utils/API.js with useMutation() SAVE_BOOK
+    const response = [saveBook, data, {error}] = useMutation(SAVE_BOOK)
     try {
-      const response = await saveBook(bookToSave, token);
+      const { data } = await saveBook({
+        variables: {bookData}
+      })
 
       if (!response.ok) {
         throw new Error('something went wrong!');

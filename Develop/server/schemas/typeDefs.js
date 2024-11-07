@@ -1,4 +1,4 @@
-const typeDefs = `
+export const typeDefs = `
   type Query {
     me: User
   }
@@ -13,7 +13,7 @@ const typeDefs = `
   type Book {
     _id: ID!
     title: String!
-    authors: [String]
+    authors: [String!]!
     description: String!
     image: String
     link: String
@@ -22,7 +22,7 @@ const typeDefs = `
   input BookInput {
     bookId: String!
     title: String!
-    authors: [String]
+    authors: [String!]!
     description: String!
     image: String
     link: String
@@ -34,7 +34,7 @@ const typeDefs = `
     username: String!
     email: String!
     password: String!
-    savedBooks: [Book]
+    savedBooks: [Book!]!
     bookCount: Int
   }
 
