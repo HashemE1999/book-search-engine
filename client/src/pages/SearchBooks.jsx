@@ -13,7 +13,6 @@ import { useMutation } from '@apollo/client';
 import Auth from '../utils/auth';
 // Importing SAVE_BOOK mutation from mutations.js
 import { SAVE_BOOK } from '../utils/mutations';
-import { saveBook, searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 
 const SearchBooks = () => {
@@ -42,12 +41,6 @@ const SearchBooks = () => {
     try {
       const response = await searchGoogleBooks(searchInput);
 
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
-
-      const { items } = await response.json();
-
       const bookData = items.map((book) => ({
         bookId: book.id,
         authors: book.volumeInfo.authors || ['No author to display'],
@@ -75,15 +68,12 @@ const SearchBooks = () => {
       return false;
     }
     // TODO: replace saveBook function imported from utils/API.js with useMutation() SAVE_BOOK
-    const response = [saveBook, data, {error}] = useMutation(SAVE_BOOK)
+    const [saveBook, {error, data}] = useMutation(SAVE_BOOK);
+
     try {
       const { data } = await saveBook({
         variables: {bookData}
       })
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
 
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
