@@ -10,6 +10,9 @@ import {
 // Importing useMutation from Apollo Client
 import { useMutation } from '@apollo/client';
 
+// Importing searchGoogleBooks function from API.js
+import { searchGoogleBooks } from '../utils/API';
+
 import Auth from '../utils/auth';
 // Importing SAVE_BOOK mutation from mutations.js
 import { SAVE_BOOK } from '../utils/mutations';
@@ -20,6 +23,8 @@ const SearchBooks = () => {
   const [searchedBooks, setSearchedBooks] = useState([]);
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState('');
+  // create state for listing out items
+  const [items, setItems] = useState([]);
 
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
@@ -41,6 +46,8 @@ const SearchBooks = () => {
     try {
       const response = await searchGoogleBooks(searchInput);
 
+      const data = await response.json();
+
       const bookData = items.map((book) => ({
         bookId: book.id,
         authors: book.volumeInfo.authors || ['No author to display'],
@@ -51,6 +58,7 @@ const SearchBooks = () => {
 
       setSearchedBooks(bookData);
       setSearchInput('');
+      setItems(data.items);
     } catch (err) {
       console.error(err);
     }
