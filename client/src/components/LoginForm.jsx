@@ -9,6 +9,8 @@ import { LOGIN_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
 
 const LoginForm = () => {
+  // Executes LOGIN_USER mutation with useMutation hook
+  const [loginUser, {error, data}] = useMutation(LOGIN_USER);
   const [userFormData, setUserFormData] = useState({ email: '', password: '' });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -27,9 +29,6 @@ const LoginForm = () => {
       event.preventDefault();
       event.stopPropagation();
     }
-
-     // Executes LOGIN_USER mutation with useMutation hook
-     const [loginUser, {error, data}] = useMutation(LOGIN_USER);
 
     try {
       const { data } = await loginUser({

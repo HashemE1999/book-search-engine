@@ -8,6 +8,8 @@ import { ADD_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
 
 const SignupForm = () => {
+  // Executes ADD_USER mutation with useMutation hook
+  const [addUser, {error, data}] = useMutation(ADD_USER);
   // set initial form state
   const [userFormData, setUserFormData] = useState({ username: '', email: '', password: '' });
   // set state for form validation
@@ -30,12 +32,9 @@ const SignupForm = () => {
       event.stopPropagation();
     }
 
-    // Executes ADD_USER mutation with useMutation hook
-    const [addUser, {error, data}] = useMutation(ADD_USER);
-
     try {
       const { data } = await addUser({
-        variables: {username, email, password}
+        variables: {userFormData}
       })
 
       console.log(user);
